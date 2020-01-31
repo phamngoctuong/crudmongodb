@@ -87,6 +87,12 @@
 	  		foreach ($articles as $key => $article) {
   			$UTCDateTime 	= new MongoDB\BSON\UTCDateTime((string)$article['createdOn']);
 	    	$DateTime 		= $UTCDateTime->toDateTime();
+	    	$data = json_encode( [
+					'id' 			=> (string) $article['_id'],
+					'title' 		=> $article['title'],
+					'description' 	=> $article['description'],
+					'author' 		=> $article['author']
+				], true);
 	  	?>
 		   	<div class="row">
 					<div class="col-md-12"><?php echo $DateTime->format('d/m/Y H:i:s'); ?></div>
@@ -100,7 +106,7 @@
 							<p class="text-right"><?php echo $article['author']; ?></p>
 						</div>
 						<div class="col-md-1">
-							<a href="#">Edit</a><br>
+							<a href='javascript:updateArticle(<?php echo $data; ?>)'>Edit</a><br>
 							<a href="#">Delete</a>
 						</div>
 					</div>
@@ -111,5 +117,17 @@
 	  </div>
  	</div>
  </div>
+ <script type="text/javascript">
+	function updateArticle(article) {
+		console.log(article);
+		$('#aid').val(article.id);
+		$('#title').val(article.title);
+		$('#description').val(article.description);
+		$('#author').val(article.author);
+		$('#create').hide();
+		$('#fileInput').hide();
+		$('#update').show();
+	}
+</script>
 </body>
 </html>
