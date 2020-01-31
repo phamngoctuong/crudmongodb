@@ -14,31 +14,31 @@
   <h1 class="text-center">CRUD operation on MongoDB in PHP using mogodb library</h1>
   <h2 class="text-center">MongoDB on Windows 10</h2>
   <?php  
-  	require_once "vendor/autoload.php";
-			if(isset($_POST['create'])) {
-				$client 	= new MongoDB\Client;
-				$dataBase 	= $client->selectDatabase('blog');
-				$collection = $dataBase->selectCollection('articles');
-				$data 		= [
-					'title' 		=> $_POST['title'],
-					'description' 	=> $_POST['description'],
-					'author' 		=> $_POST['author'],
-					'createdOn' 	=> new MongoDB\BSON\UTCDateTime
-				];
-				if($_FILES['file']) {
-					if(move_uploaded_file($_FILES['file']['tmp_name'], 'upload/'.$_FILES['file']['name'])) {
-						$data['fileName'] = $_FILES['file']['name'];
-					} else {
-						echo "Failed to upload file.";
-					}
-				}
-				$result = $collection->insertOne($data);
-				if($result->getInsertedCount()>0) {
-					echo "Article is created..";
+		require_once "vendor/autoload.php";
+		$client 	= new MongoDB\Client;
+		$dataBase 	= $client->selectDatabase('blog');
+		$collection = $dataBase->selectCollection('articles');
+		if(isset($_POST['create'])) {
+			$data 		= [
+				'title' 		=> $_POST['title'],
+				'description' 	=> $_POST['description'],
+				'author' 		=> $_POST['author'],
+				'createdOn' 	=> new MongoDB\BSON\UTCDateTime
+			];
+			if($_FILES['file']) {
+				if(move_uploaded_file($_FILES['file']['tmp_name'], 'upload/'.$_FILES['file']['name'])) {
+					$data['fileName'] = $_FILES['file']['name'];
 				} else {
-					echo "Failed to create Article";
+					echo "Failed to upload file.";
 				}
 			}
+			$result = $collection->insertOne($data);
+			if($result->getInsertedCount()>0) {
+				echo "Article is created..";
+			} else {
+				echo "Failed to create Article";
+			}
+		}
   ?>
   <div class="row">
 	  <div class="col-md-4">
@@ -82,44 +82,60 @@
 	   </form>
 	  </div>
 	  <div class="col-md-8">
-	   <!-- Show Articles -->
-	   <!-- <?php 
-	  		$articles = $collection->find();
-	  		foreach ($articles as $key => $article) {
-	  			$UTCDateTime 	= new MongoDB\BSON\UTCDateTime((string)$article['createdOn']);
-	  			$DateTime 		= $UTCDateTime->toDateTime();
-
-	  			$data = json_encode( [
-					'id' 			=> (string) $article['_id'],
-					'title' 		=> $article['title'],
-					'description' 	=> $article['description'],
-					'author' 		=> $article['author']
-				], true);
-
-	  			echo '<div class="rows">
-						<div class="col-md-12">'.$DateTime->format('d/m/Y H:i:s').'</div>
-						<div class="rows">
-							<div class="col-md-3"><img src="upload/'.$article['fileName'].'" width="180"></div>
-							<div class="col-md-8">
-								<strong>'.$article['title'].'</strong>
-								<p>'.$article['description'].'</p>
-								<p class="text-right">'.$article['author'].'</p>
-							</div>';
-				echo	"<div class='col-md-1'>
-							<a href='javascript:updateArticle($data)'>Edit</a><br><br>
-							<a href='index.php?action=delete&aid=".$article['_id']."'>Delete</a>
-							</div>
-						</div>
-					</div>";
-	  		}
-	  	?> -->
+	   	<div class="row">
+				<div class="col-md-12">2/1/2020</div>
+				<div class="row">
+					<div class="col-md-3">
+						<img src="./upload/1.jpg" width="100%">
+					</div>
+					<div class="col-md-8">
+						<strong>title</strong>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, nostrum perspiciatis soluta, nesciunt illo perferendis? Quae repellendus quas, accusamus nihil.</p>
+						<p class="text-right">author</p>
+					</div>
+					<div class="col-md-1">
+						<a href="#">Edit</a><br>
+						<a href="#">Delete</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">2/1/2020</div>
+				<div class="row">
+					<div class="col-md-3">
+						<img src="./upload/1.jpg" width="100%">
+					</div>
+					<div class="col-md-8">
+						<strong>title</strong>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, nostrum perspiciatis soluta, nesciunt illo perferendis? Quae repellendus quas, accusamus nihil.</p>
+						<p class="text-right">author</p>
+					</div>
+					<div class="col-md-1">
+						<a href="#">Edit</a><br>
+						<a href="#">Delete</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">2/1/2020</div>
+				<div class="row">
+					<div class="col-md-3">
+						<img src="./upload/1.jpg" width="100%">
+					</div>
+					<div class="col-md-8">
+						<strong>title</strong>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, nostrum perspiciatis soluta, nesciunt illo perferendis? Quae repellendus quas, accusamus nihil.</p>
+						<p class="text-right">author</p>
+					</div>
+					<div class="col-md-1">
+						<a href="#">Edit</a><br>
+						<a href="#">Delete</a>
+					</div>
+				</div>
+			</div>
 	  </div>
  	</div>
  </div>
- <?php
-		require_once __DIR__ . "/vendor/autoload.php";
-		$collection = (new MongoDB\Client)->test->users;
-	?>
 </body>
 
 </html>
