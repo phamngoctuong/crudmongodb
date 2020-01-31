@@ -82,60 +82,34 @@
 	   </form>
 	  </div>
 	  <div class="col-md-8">
-	   	<div class="row">
-				<div class="col-md-12">2/1/2020</div>
-				<div class="row">
-					<div class="col-md-3">
-						<img src="./upload/1.jpg" width="100%">
-					</div>
-					<div class="col-md-8">
-						<strong>title</strong>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, nostrum perspiciatis soluta, nesciunt illo perferendis? Quae repellendus quas, accusamus nihil.</p>
-						<p class="text-right">author</p>
-					</div>
-					<div class="col-md-1">
-						<a href="#">Edit</a><br>
-						<a href="#">Delete</a>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">2/1/2020</div>
-				<div class="row">
-					<div class="col-md-3">
-						<img src="./upload/1.jpg" width="100%">
-					</div>
-					<div class="col-md-8">
-						<strong>title</strong>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, nostrum perspiciatis soluta, nesciunt illo perferendis? Quae repellendus quas, accusamus nihil.</p>
-						<p class="text-right">author</p>
-					</div>
-					<div class="col-md-1">
-						<a href="#">Edit</a><br>
-						<a href="#">Delete</a>
+	  	<?php  
+	  		$articles = $collection->find();
+	  		foreach ($articles as $key => $article) {
+  			$UTCDateTime 	= new MongoDB\BSON\UTCDateTime((string)$article['createdOn']);
+	    	$DateTime 		= $UTCDateTime->toDateTime();
+	  	?>
+		   	<div class="row">
+					<div class="col-md-12"><?php echo $DateTime->format('d/m/Y H:i:s'); ?></div>
+					<div class="row">
+						<div class="col-md-3">
+							<img src="./upload/<?php echo $article['fileName']; ?>" width="100%">
+						</div>
+						<div class="col-md-8">
+							<strong><?php echo $article['title']; ?></strong>
+							<p><?php echo $article['description']; ?></p>
+							<p class="text-right"><?php echo $article['author']; ?></p>
+						</div>
+						<div class="col-md-1">
+							<a href="#">Edit</a><br>
+							<a href="#">Delete</a>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">2/1/2020</div>
-				<div class="row">
-					<div class="col-md-3">
-						<img src="./upload/1.jpg" width="100%">
-					</div>
-					<div class="col-md-8">
-						<strong>title</strong>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, nostrum perspiciatis soluta, nesciunt illo perferendis? Quae repellendus quas, accusamus nihil.</p>
-						<p class="text-right">author</p>
-					</div>
-					<div class="col-md-1">
-						<a href="#">Edit</a><br>
-						<a href="#">Delete</a>
-					</div>
-				</div>
-			</div>
+	  	<?php
+	  		}
+	  	?>
 	  </div>
  	</div>
  </div>
 </body>
-
 </html>
