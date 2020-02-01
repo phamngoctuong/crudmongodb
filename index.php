@@ -39,6 +39,20 @@
 				echo "Failed to create Article";
 			}
 		}
+		if(isset($_POST['update'])) {
+			$filter		= ['_id' => new MongoDB\BSON\ObjectId($_POST['aid'])];
+			$data 		= [
+				'title' 		=> $_POST['title'],
+				'description' 	=> $_POST['description'],
+				'author' 		=> $_POST['author']
+			];
+			$result = $collection->updateOne($filter, ['$set' => $data]);
+			if($result->getModifiedCount()>0) {
+				echo "Article is updated..";
+			} else {
+				echo "Failed to update Article";
+			}
+		}
   ?>
   <div class="row">
 	  <div class="col-md-4">
