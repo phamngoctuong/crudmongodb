@@ -53,6 +53,27 @@
 				echo "Failed to update Article";
 			}
 		}
+		if(isset($_GET['action']) && $_GET['action'] == 'delete') {		
+			$filter		= ['_id' => new MongoDB\BSON\ObjectId($_GET['aid'])];
+			$article = $collection->findOne($filter);
+			if(!$article) {
+				echo "Article not found.";
+			}
+			$fileName = 'upload/'.$article['fileName'];
+			if(file_exists($fileName)) {
+				if(!unlink($fileName)) {
+					echo "Failed to delete file."; 
+					exit;
+				}
+			}
+			$result = $collection->deleteOne($filter);
+			if($result->getDeletedCount()>0) {
+				echo "Article is deleted..";
+				header("Location: http://localhost/mongodb");
+			} else {
+				echo "Failed to delete Article";
+			}
+		}
   ?>
   <div class="row">
 	  <div class="col-md-4">
@@ -121,7 +142,7 @@
 						</div>
 						<div class="col-md-1">
 							<a href='javascript:updateArticle(<?php echo $data; ?>)'>Edit</a><br>
-							<a href="#">Delete</a>
+							<a href="index.php?action=delete&aid=<?php echo $article['_id'];  ?>">Delete</a>
 						</div>
 					</div>
 				</div>
